@@ -1,6 +1,6 @@
 name: otel_azure_cosmos_db
 description: "Dartastic OpenTelemetry bridge for Azure Cosmos DB (SQL/Mongo/Cassandra/Gremlin/Table)."
-version: 0.1.0-beta.1
+version: 0.1.0-beta.2-wip
 repository: https://github.com/dartastic/otel_azure_cosmos_db
 homepage: https://dartastic.io
 publish_to: https://pub.dartastic.io
