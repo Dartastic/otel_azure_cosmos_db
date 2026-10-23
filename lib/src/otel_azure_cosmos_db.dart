@@ -1,15 +1,16 @@
-// Licensed under the Dartastic Pro Software License Agreement.
+// Licensed under the Apache License, Version 2.0
 // Copyright 2025-2026 Mindful Software LLC d/b/a Dartastic.io, All rights reserved.
 
-import 'package:dartastic_opentelemetry/dartastic_opentelemetry.dart';
+import 'package:dartastic_opentelemetry_api/dartastic_opentelemetry_api.dart';
 
 import 'otel_azure_cosmos_db_suppression.dart';
 
 const _tracerName = 'dartastic_otel_libs_azure_cosmos_db';
 
-Tracer _tracer() => OTel.tracerProvider().getTracer(_tracerName);
+APITracer _tracer() => OTelAPI.tracerProvider().getTracer(_tracerName);
 
 class AzureCosmosDbResult {
+  /// Creates a result.
   const AzureCosmosDbResult({
     this.accountEndpoint,
     this.apiKind,
@@ -98,8 +99,13 @@ class AzureCosmosDbResult {
   final int? statusCode;
 }
 
+/// What a traced call returned: the value for the caller plus fields
+/// recorded on the span.
 class AzureCosmosDbCallResult<T> {
+  /// Creates a call result.
   const AzureCosmosDbCallResult({required this.value, this.result});
+
+  /// The value returned to the caller.
   final T value;
   final AzureCosmosDbResult? result;
 }
@@ -133,7 +139,7 @@ Future<T> tracedAzureCosmosDb<T>({
   final span = _tracer().startSpan(
     'azure_cosmos_db $operation',
     kind: SpanKind.client,
-    attributes: OTel.attributesFromMap(m),
+    attributes: OTelAPI.attributesFromMap(m),
   );
   try {
     final r = await invoke();
@@ -141,121 +147,121 @@ Future<T> tracedAzureCosmosDb<T>({
       final res = r.result!;
       final extras = <Attribute<Object>>[];
       if (res.accountEndpoint != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'azure_cosmos_db.account.endpoint',
           res.accountEndpoint!,
         ));
       }
       if (res.apiKind != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'azure_cosmos_db.api.kind',
           res.apiKind!,
         ));
       }
       if (res.database != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'azure_cosmos_db.database',
           res.database!,
         ));
       }
       if (res.container != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'azure_cosmos_db.container',
           res.container!,
         ));
       }
       if (res.partitionKey != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'azure_cosmos_db.partition_key',
           res.partitionKey!,
         ));
       }
       if (res.partitionKeyKind != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'azure_cosmos_db.partition_key.kind',
           res.partitionKeyKind!,
         ));
       }
       if (res.consistencyLevel != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'azure_cosmos_db.consistency_level',
           res.consistencyLevel!,
         ));
       }
       if (res.itemId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'azure_cosmos_db.item.id',
           res.itemId!,
         ));
       }
       if (res.activityId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'azure_cosmos_db.activity.id',
           res.activityId!,
         ));
       }
       if (res.requestBytes != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'azure_cosmos_db.request.bytes',
           res.requestBytes!,
         ));
       }
       if (res.responseBytes != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'azure_cosmos_db.response.bytes',
           res.responseBytes!,
         ));
       }
       if (res.itemCount != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'azure_cosmos_db.item.count',
           res.itemCount!,
         ));
       }
       if (res.requestCharge != null) {
-        extras.add(OTel.attributeDouble(
+        extras.add(OTelAPI.attributeDouble(
           'azure_cosmos_db.request_charge_rus',
           res.requestCharge!,
         ));
       }
       if (res.consumedRus != null) {
-        extras.add(OTel.attributeDouble(
+        extras.add(OTelAPI.attributeDouble(
           'azure_cosmos_db.consumed_rus',
           res.consumedRus!,
         ));
       }
       if (res.queryRus != null) {
-        extras.add(OTel.attributeDouble(
+        extras.add(OTelAPI.attributeDouble(
           'azure_cosmos_db.query_rus',
           res.queryRus!,
         ));
       }
       if (res.continuationToken != null) {
-        extras.add(OTel.attributeBool(
+        extras.add(OTelAPI.attributeBool(
           'azure_cosmos_db.continuation_token',
           res.continuationToken!,
         ));
       }
       if (res.indexUtilization != null) {
-        extras.add(OTel.attributeBool(
+        extras.add(OTelAPI.attributeBool(
           'azure_cosmos_db.index_utilization',
           res.indexUtilization!,
         ));
       }
       if (res.crossPartition != null) {
-        extras.add(OTel.attributeBool(
+        extras.add(OTelAPI.attributeBool(
           'azure_cosmos_db.cross_partition',
           res.crossPartition!,
         ));
       }
       if (res.retryAfterMs != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'azure_cosmos_db.retry_after_ms',
           res.retryAfterMs!,
         ));
       }
       if (res.errorCode != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'azure_cosmos_db.error.code',
           res.errorCode!,
         ));
@@ -265,19 +271,19 @@ Future<T> tracedAzureCosmosDb<T>({
         );
       }
       if (res.errorSubStatus != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'azure_cosmos_db.error.sub_status',
           res.errorSubStatus!,
         ));
       }
       if (res.errorMessage != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'azure_cosmos_db.error.message',
           res.errorMessage!,
         ));
       }
       if (res.statusCode != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'http.response.status_code',
           res.statusCode!,
         ));
@@ -288,13 +294,13 @@ Future<T> tracedAzureCosmosDb<T>({
           );
         }
       }
-      if (extras.isNotEmpty) span.addAttributes(OTel.attributes(extras));
+      if (extras.isNotEmpty) span.addAttributes(OTelAPI.attributes(extras));
     }
     return r.value;
   } catch (e, st) {
-    span.addAttributes(OTel.attributes([
-      OTel.attributeString(
-        ErrorResource.errorType.key,
+    span.addAttributes(OTelAPI.attributes([
+      OTelAPI.attributeString(
+        ErrorAttributes.errorType.key,
         e.runtimeType.toString(),
       ),
     ]));
